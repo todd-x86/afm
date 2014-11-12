@@ -17,6 +17,11 @@ class Response
 		header('Content-Type: '.$this->contentType);
 	}
 	
+	function forbidden ()
+	{
+		$this->status = 403;
+	}
+	
 	function write ($content)
 	{
 		if ($this->writeHeaders)

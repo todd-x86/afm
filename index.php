@@ -16,8 +16,15 @@ class HelloWorld
 
 class TestClass
 {
+	public $app;
+	
 	function doCool ($request, $response)
 	{
+		if ($request->get('bar', false) !== false)
+		{
+			$this->app->abort(403);
+			return;
+		}
 		$response->write('<h1>Provide a Query &quot;foo&quot;</h1>');
 		$data = $request->get('foo', 'None');
 		$response->write('Uppercase - '.strtoupper($data).' | Lowercase - '.strtolower($data).' | Normal - '.$data);
@@ -27,6 +34,8 @@ class TestClass
 $test = new TestClass();
 
 $app = new Application();
+
+$test->app = $app;
 
 $app->route('/', function ($request, $response) {
 	$response->write('Welcome to AppFrameMicro');
