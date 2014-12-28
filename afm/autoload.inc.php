@@ -30,10 +30,17 @@ spl_autoload_register(function ($class) {
 			$primaryDir = 'vendor/'.$firstSeg;
 	}
 	
+	// Check primary file and an alternative filename (X.class.php vs. X.php)
 	$file = $primaryDir.'/'.implode('/', $segments).'/'.$className.'.class.php';
+	$altFile = $primaryDir.'/'.implode('/', $segments).'/'.$className.'.php';
 	if (file_exists($file))
 	{
 		require($file);
+		return true;
+	}
+	elseif (file_exists($altFile))
+	{
+		require($altFile);
 		return true;
 	}
 	else
