@@ -53,7 +53,7 @@ class Path
 	
 	public static function local ($path)
 	{
-		return self::buildPath($path, self::$pwd);
+		return self::buildPath($path, self::getCwd());
 	}
 	
 	public static function web ($path)
