@@ -7,6 +7,11 @@
  * [ Primary ] \ [ Directory ] \ [ Class Name ]
  */
 
+if (file_exists('vendor/autoload.php'))
+{
+	require('vendor/autoload.php');
+}
+
 spl_autoload_register(function ($class) {
 	if (substr($class, 0, 1) === '\\')
 	{
