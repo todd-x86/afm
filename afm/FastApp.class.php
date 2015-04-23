@@ -31,7 +31,7 @@ class FastApp
 		list($success, $matches) = Routing::match($uri, $this->request->URI);
 		if ($success)
 		{
-			call_user_func_array($callback, array_merge($this->runArgs, [$matches]));
+			call_user_func_array($callback, array_merge($this->runArgs, $matches));
 			$this->called = true;
 		}
 	}

@@ -17,4 +17,10 @@ class Arr
 			return $default;
 		}
 	}
+	
+	public static function map ($values, $func)
+	{
+		// Because I like the OOP way better than the procedural way
+		return array_map($func, $values);
+	}
 }

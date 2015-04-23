@@ -63,7 +63,12 @@ class Path
 	
 	public static function join ($path, $separator = DIRECTORY_SEPARATOR)
 	{
-		return implode($separator, $path);
+		$path = implode($separator, $path);
+		while (strpos($path, $separator.$separator) !== false)
+		{
+			$path = str_replace($separator.$separator, $separator, $path);
+		}
+		return $path;
 	}
 	
 	public static function absolute ($path)

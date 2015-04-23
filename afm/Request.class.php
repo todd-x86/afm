@@ -54,4 +54,19 @@ class Request
 	{
 		return Arr::get($this->params, $id, $default);
 	}
+	
+	function isPost ()
+	{
+		return count($_POST) > 0;
+	}
+	
+	function rawGet ()
+	{
+		return $_GET;
+	}
+	
+	function rawPost ()
+	{
+		return $_POST;
+	}
 }
