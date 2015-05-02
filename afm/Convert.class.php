@@ -19,6 +19,11 @@ class Convert
 		return floatval($value);
 	}
 	
+	public static function toBoolean ($value)
+	{
+		return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+	}
+	
 	public static function toHTML ($value)
 	{
 		return htmlentities($value);
