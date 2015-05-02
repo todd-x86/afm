@@ -28,4 +28,9 @@ class Type
 	{
 		if (!is_bool($x)) return Exception('TypeError - value supplied is not a boolean');
 	}
+
+	public static function isNumeric ($x)
+	{
+		if (!is_numeric($x)) return Exception('TypeError - value supplied is not a numeric value');
+	}
 }
