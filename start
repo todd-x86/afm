@@ -1,0 +1,68 @@
+#!/bin/bash
+
+LOCAL_DIR=$(dirname "${BASH_SOURCE}")
+
+printf "Project Path: "
+read path
+
+if [ "${path}" == "" ]; then
+	echo "Path '${path}' is invalid" 1>&2
+	exit 1
+elif [ "$(readlink -f "${path}")" == "$(readlink -f "${LOCAL_DIR}")" ]; then
+	echo "Path cannot be the same directory as AFM" 1>&2
+	exit 1
+elif ! mkdir -p "${path}"; then
+	echo "Failed to create directory '${path}'" 1>&2
+	exit 1
+fi
+
+# Setup AFM
+echo "Installing 'afm'..."
+mkdir -p ${path}/afm/
+rsync -r ${LOCAL_DIR}/* ${path}/afm/
+cp ${LOCAL_DIR}/.htaccess ${path}/afm/.htaccess
+
+# Copy template files
+echo "Installing sample application..."
+rsync -r ${LOCAL_DIR}/templates/app/* ${path}/
+cp ${LOCAL_DIR}/templates/app/.htaccess ${path}/
+
+# Copy vendor files (optional)
+if [ -d "${LOCAL_DIR}/vendor" ]; then
+	echo "Install Vendor Plugins: [A]ll, [S]election, [N]one"
+	read sel
+	sel=$(echo "${sel}" | tr '[:upper:]' '[:lower:]')
+	while [ "${sel}" != "" ]; do
+		if [ "${sel}" == "a" ]; then
+			rsync -r ${LOCAL_DIR}/vendor ${path}/vendor
+			break
+		elif [ "${sel}" == "s" ]; then
+			mkdir -p ${path}/vendor/
+			for plugin in $(ls ${LOCAL_DIR}/vendor); do
+				echo "[Vendor Module: ${plugin}]"
+				plugin_dir="${LOCAL_DIR}/vendor/${plugin}"
+				readme_file="${plugin_dir}/README"
+				if [ -f "${readme_file}" ]; then
+					echo "----------------------------------------"
+					head -n 15 "${readme_file}"
+					echo "----------------------------------------"
+				fi
+				echo "Install? [Y/n]"
+				read plugin_sel
+				if [ "${plugin_sel}" == "Y" ] || [ "${plugin_sel}" == "y" ]; then
+					rsync -r ${plugin_dir} ${path}/vendor/
+				fi
+			done
+			break
+		elif [ "${sel}" == "n" ]; then
+			break
+		else
+			echo "Unknown option -- ${sel}"
+		fi
+		echo "Install Vendor Plugins: [A]ll, [S]election, [N]one"
+		read sel
+		sel=$(echo "${sel}" | tr '[:upper:]' '[:lower:]')
+	done
+fi
+
+echo "Done."
