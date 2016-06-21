@@ -34,7 +34,7 @@ if [ -d "${LOCAL_DIR}/vendor" ]; then
 	sel=$(echo "${sel}" | tr '[:upper:]' '[:lower:]')
 	while [ "${sel}" != "" ]; do
 		if [ "${sel}" == "a" ]; then
-			rsync -r ${LOCAL_DIR}/vendor ${path}/vendor
+			rsync -r ${LOCAL_DIR}/vendor ${path}/
 			break
 		elif [ "${sel}" == "s" ]; then
 			mkdir -p ${path}/vendor/
