@@ -102,7 +102,11 @@ class Db
 		elseif (is_integer($value) || is_double($value))
 		{
 			return Convert::toString($value);
-		}
+                }
+                elseif ($value === NULL)
+                {
+                        return 'NULL';
+                }
 		else
 		{
 			// TODO: Deal with blobs later
